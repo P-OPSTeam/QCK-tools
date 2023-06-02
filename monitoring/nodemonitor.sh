@@ -23,6 +23,7 @@ fi
 CONFIG=""                # config.toml file for node, eg. $HOME/.gaia/config/config.toml
 ### optional:            #
 NAME=""                  # enter the name off the validator key
+KEYRINGPW=""             # enter keyring password
 NPRECOMMITS="20"         # check last n precommits, can be 0 for no checking
 VALIDATORADDRESS=""      # if left empty default is from status call (validator)
 QuicksilverVALIDATORADDRESS="" #if left empty default is from status call (Quicksilver validator)
@@ -126,7 +127,11 @@ then
         then
         read -p "The name of your validator address :" NAME
         fi
-        QuicksilverVALIDATORADDRESS=$(Quicksilverd keys show $NAME --bech val -a --keyring-backend test);
+        if [ -z $KEYRINGPW ];
+        then
+        read -p "Please enter your keyring password :" KEYRINGPW
+        fi
+        QuicksilverVALIDATORADDRESS=$(echo $KEYRINGPW | quicksilverd keys show $NAME --bech val -a);
 
 fi
 
@@ -183,7 +188,7 @@ date=$(date --rfc-3339=seconds)
 echo "$date status=scriptstarted chainid=$chainid" >>$logfile
 
     # Checking Quicksilverd process running
-    if pgrep Quicksilverd >/dev/null; then
+    if pgrep quicksilverd >/dev/null; then
         echo "Is Quicksilverd binary running: Yes";
         Quicksilverd_run_status="OK"
         if [ $Quicksilverd_run_n == "false" ]; then #Quicksilverd process was not ok
