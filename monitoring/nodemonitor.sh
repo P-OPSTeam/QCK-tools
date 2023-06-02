@@ -88,7 +88,7 @@ send_notification() {
 }
 
 if [ -z $CONFIG ]; then
-        CONFIG=~/..quicksilverd/config/config.toml;
+        CONFIG=~/.quicksilverd/config/config.toml;
 fi
 
 if [ -z $CONFIG ]; then
